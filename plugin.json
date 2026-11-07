@@ -1,7 +1,7 @@
 {
   "id": "neodex.pulsar",
   "name": "Pulsar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "NDesumeur",
   "description": "Un jeu de rythme en cercle : les notes foncent vers une étoile depuis huit directions. Tourne le bouclier pour les attraper et frappe les anneaux roses. Les 200 morceaux de Rythme, ou ta propre musique.",
   "icon": "icon.png",
