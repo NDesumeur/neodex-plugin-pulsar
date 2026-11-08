@@ -967,7 +967,6 @@ function psDraw() {
     if (rh.judge && rh.mode === 'play') pxFont(g, rh.judge.text, PS.CX, PS.CY + 22 - (24 - rh.judge.t) / 4, rh.judge.col, 6, 'center');
     pxFont(g, rhStarTxt(rh.stars), 4, H - 6, '#6a64a0', 6);
   }
-  if (rh.mode === 'play' && now < 0) pxFont(g, String(Math.ceil(-now)), PS.CX, 44, '#ffd84a', 16, 'center');
   rhScreens(84);
 }
 cv.onpointermove = e => { if (rh?.ang == null) return; const [x, y] = cpos(e); if (Math.hypot(x - PS.CX, y - PS.CY) > 4) { rh.mx = x; rh.ang = Math.atan2(y - PS.CY, x - PS.CX); } };
