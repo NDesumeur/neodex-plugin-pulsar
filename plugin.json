@@ -3,7 +3,7 @@
   "name": "Pulsar",
   "version": "1.0.1",
   "author": "NDesumeur",
-  "description": "Un jeu de rythme en cercle : les notes foncent vers une étoile depuis huit directions. Tourne le bouclier pour les attraper et frappe les anneaux roses. Les 200 morceaux de Rythme, ou ta propre musique.",
+  "description": "Jeu de rythme en cercle : les notes foncent vers une étoile depuis huit directions. Tourne le bouclier à la souris ou aux flèches pour attraper les notes bleues, frappe avec Espace ou un clic les anneaux roses quand ils se posent sur le cercle. Les 200 morceaux de Rythme notés de 1 à 10 étoiles, ou des niveaux créés depuis ta musique ; combo, note de S à D.",
   "icon": "icon.png",
   "entry": "index.js",
   "view": "pulsar",
