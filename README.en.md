@@ -1,6 +1,6 @@
 # Pulsar
 
-A circular rhythm game: notes rush towards a star from eight directions. Turn the shield around the star to catch the blue notes, and hit the shrinking pink rings at the right moment. Play the 200 tracks from the Rythme plugin, or your own music.
+A circular rhythm game: notes rush towards a star from eight directions. Turn the shield around the star to catch the blue notes, and hit the shrinking pink rings at the right moment. Play the 1200 tracks from the Rythme plugin, or your own music.
 
 *Version française : [README.md](README.md)*
 
@@ -18,7 +18,7 @@ A note's points rise by 1 % per note of combo, up to double at 100 notes in a ro
 
 ## Songs and difficulty
 
-The **Songs** tab offers the 200 Rythme tracks. Each level's difficulty is worked out from its notes (density, busy passages, shield movements), from 1 to 10 stars.
+The **Songs** tab offers the 1200 Rythme tracks. Each level's difficulty is worked out from its notes (density, busy passages, shield movements), from 1 to 10 stars.
 
 ## My music
 
