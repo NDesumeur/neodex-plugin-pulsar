@@ -16,6 +16,10 @@ Les anneaux sont jugés selon l'écart avec le bon moment : **Parfait** (environ
 
 Les points d'une note augmentent de 1 % par note de combo, jusqu'au double à 100 notes de suite ; une note ratée remet le combo à zéro. À la fin, la précision donne une note : **S** à partir de 95 %, **A** à 90 %, **B** à 80 %, **C** à 70 %, **D** en dessous.
 
+## L'étoile et l'écran de fin
+
+L'étoile du centre suit la musique : son halo grandit avec la force du son et bat la mesure, et elle change de couleur toutes les deux mesures. À la fin du morceau, sous la note, une courbe montre ta précision le long du morceau (vert : juste, jaune : ça se gâte, rouge : ça décroche) ; les petits traits rouges dessous marquent les notes ratées.
+
 ## Chansons et difficulté
 
 L'onglet **Chansons** reprend les 1200 morceaux de Rythme. La difficulté de chaque niveau est calculée d'après ses notes (densité, passages chargés, déplacements du bouclier), de 1 à 10 étoiles.

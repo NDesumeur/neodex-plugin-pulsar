@@ -16,6 +16,10 @@ Rings are judged by how far they are from the right moment: **Perfect** (about Â
 
 A note's points rise by 1 % per note of combo, up to double at 100 notes in a row; a miss resets the combo. At the end, accuracy gives a grade: **S** from 95 %, **A** at 90 %, **B** at 80 %, **C** at 70 %, **D** below.
 
+## The star and the end screen
+
+The central star follows the music: its halo grows with the loudness and beats in time, and it changes colour every two bars. At the end of the song, under the grade, a curve shows your accuracy along the song (green: right, yellow: slipping, red: falling apart); the small red marks underneath show the missed notes.
+
 ## Songs and difficulty
 
 The **Songs** tab offers the 1200 Rythme tracks. Each level's difficulty is worked out from its notes (density, busy passages, shield movements), from 1 to 10 stars.
