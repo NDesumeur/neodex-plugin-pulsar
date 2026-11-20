@@ -1,9 +1,9 @@
 {
   "pluginId": "neodex.pulsar",
   "repo": "NDesumeur/neodex-plugin-pulsar",
-  "version": "1.1.1",
-  "sha256": "4b5a4d7dcf27d62d14ef5c78befa97e18ee5b4002b2b570dd2dffef313c3a89b",
-  "approvedAt": "2026-11-16T16:38:51.182Z",
+  "version": "1.2.0",
+  "sha256": "12de5600a631f258dbb33dfecff5642a04bb8d9d667a3e6e5084da7b0be21cb5",
+  "approvedAt": "2026-11-20T01:51:13.866Z",
   "neobase": ">=4.1.0",
-  "signature": "l3i43qT0JWrUe1bAU4hVaPTe350yapY4YGLtzKRlWFYsPD4xXQHQFVK+jOg6TQl4+9p3+IDMO9qeT5SjUmNzBw=="
+  "signature": "GAgISlynk6ySAKXjut++EY9TcpptlrAgA3ikWvWcay2L7pvByIhwIfa+x6RAJjQsMFCemQN2evcyxSGsthuYDw=="
 }
