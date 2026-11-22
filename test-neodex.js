@@ -20,6 +20,11 @@ module.exports = async ({ pj, sleep }) => {
   await pj(`document.fullscreenElement && document.exitFullscreen(), 0`);
   const end = await pj(`(() => { const rh = document.getElementById('gc').__rh.st(); return [rh.mode, rh.hist.length, rh.grade].join(','); })()`);
   if (!/^over,200,[SABCD]$/.test(end)) throw new Error('écran de fin : ' + end);
+  // 1.3.0 : en Expert, des notes rouges à éviter ; la largeur du bouclier se règle
+  await pj(`[...document.querySelectorAll('.rhSong')].find(c => c.textContent.includes('Lever de néon'))?.querySelectorAll('button')[3]?.click(), 0`);
+  for (let i = 0; i < 40 && await pj(`document.getElementById('gc').__rh.st().mode !== 'ready'`); i++) await sleep(500);
+  const ex = await pj(`(() => { const s = document.getElementById('psArc'); s.value = '0.3'; s.dispatchEvent(new Event('change')); const rh = document.getElementById('gc').__rh.st(), r = [rh.diff, rh.notes.some(n => n.kind === 'avoid'), rh.arc].join(); s.value = '0.42'; s.dispatchEvent(new Event('change')); return r; })()`);
+  if (ex !== 'expert,true,0.3') throw new Error('notes rouges et bouclier : ' + ex);
   const errs = await pj(`__e`); if (errs.length) throw new Error(errs.join(' | '));
-  return hues + ' couleurs d’étoile, halo jusqu’à ' + top.toFixed(2) + ' · écran de fin avec la courbe : ' + end;
+  return hues + ' couleurs d’étoile, halo jusqu’à ' + top.toFixed(2) + ' · écran de fin avec la courbe : ' + end + ' · notes rouges et bouclier ok';
 };

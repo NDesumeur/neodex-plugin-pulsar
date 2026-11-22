@@ -9,7 +9,7 @@ const HTML = `<div class="appWrap wide">
       <div class="row"><button class="btn" id="rhTabSongs">CHANSONS</button><button class="btn" id="rhTabMine">MES MUSIQUES</button></div>
       <div class="sysCard rhImport" id="rhImport" style="display:none"><div class="row"><button class="btn main" id="rhFileBtn">IMPORTER UN FICHIER AUDIO</button><input type="file" id="rhFile" accept="audio/*,.mp3,.m4a,.ogg,.opus,.wav,.flac,.webm" hidden></div><div class="row"><select class="f" id="rhMuList"></select><button class="btn" id="rhMuBtn">CRÉER LE NIVEAU</button></div><div class="row"><label>Difficulté <select class="f" id="rhStars"><option value="1">1 ★</option><option value="2">2 ★</option><option value="3" selected>3 ★</option><option value="4">4 ★</option><option value="5">5 ★</option><option value="6">6 ★</option><option value="7">7 ★</option><option value="8">8 ★</option><option value="9">9 ★</option><option value="10">10 ★</option></select></label></div><span class="hint" id="rhImpMsg">Un fichier ou une musique de NeoMusic : le jeu trouve son tempo et ses temps forts et en fait un niveau.</span></div>
       <div id="rhSongs"></div>
-      <div class="sysCard rhOpts"><label>Volume <input type="range" id="rhVol" min="0" max="100" value="70"></label><label>Son des clics <select class="f gSel" id="rhClick"><option value="0" selected>Doux</option><option value="1">Clap</option><option value="2">Bois</option><option value="3">Grosse caisse</option><option value="4">Cristal</option><option value="5">Pop</option><option value="6">Charleston</option><option value="7">Caisse claire</option><option value="8">Pluck</option><option value="9">Tok</option><option value="-1">Aucun</option></select></label><label>Décalage <input type="number" class="f" id="rhOffset" min="-300" max="300" step="5" value="0" style="width:80px" title="Réglé tout seul après chaque partie"> ms</label></div>
+      <div class="sysCard rhOpts"><label>Volume <input type="range" id="rhVol" min="0" max="100" value="70"></label><label>Son des clics <select class="f gSel" id="rhClick"><option value="0" selected>Doux</option><option value="1">Clap</option><option value="2">Bois</option><option value="3">Grosse caisse</option><option value="4">Cristal</option><option value="5">Pop</option><option value="6">Charleston</option><option value="7">Caisse claire</option><option value="8">Pluck</option><option value="9">Tok</option><option value="-1">Aucun</option></select></label><label title="La largeur du bouclier : plus petit, c'est plus dur">Bouclier <select class="f gSel" id="psArc"><option value="0.55">Large</option><option value="0.42" selected>Normal</option><option value="0.3">Petit</option></select></label><label title="Les notes bleues disparaissent avant d'arriver : il faut les deviner">Notes cachées <select class="f gSel" id="psHid"><option value="0" selected>Non</option><option value="1">Oui</option></select></label><label>Décalage <input type="number" class="f" id="rhOffset" min="-300" max="300" step="5" value="0" style="width:80px" title="Réglé tout seul après chaque partie"> ms</label></div>
       <div class="hint">Les notes bleues s'attrapent avec le bouclier : place-le sur leur voie quand elles touchent l'anneau. Un repère blanc s'allume au bout de la voie de la prochaine note.</div><div class="hint">Les anneaux roses se resserrent vers le cercle du bouclier. Quand un anneau arrive, le cercle s'allume en rose ; frappe (espace ou clic) quand l'anneau se pose dessus : tout devient blanc et « ESPACE ! » s'affiche au bon moment.</div><div class="hint">La difficulté de chaque niveau est calculée sur ses notes (densité, passages chargés, déplacements) : de 1★ à 10★.</div>
     </div></div>
 </div>`;
@@ -943,7 +943,7 @@ function rhCheckEnd(now) {
   rh.acc = acc; rh.grade = acc >= .95 ? 'S' : acc >= .9 ? 'A' : acc >= .8 ? 'B' : acc >= .7 ? 'C' : 'D';
   const k = rh.info.key, res = gstore('rhythm', {}); rh.record = best(k, rh.score);
   if (rh.record || !res[k]) res[k] = {score: rh.score, acc: Math.round(acc * 1000) / 10, grade: rh.grade, combo: rh.maxCombo};
-  rh.adj = rhAutoOffset(rh.dts); saveGames(); sfx('SAB'.includes(rh.grade) ? 'launch' : 'notify'); rhList(); rhInfo();
+  rh.adj = rhAutoOffset(rh.dts); RHG.over?.(); saveGames(); sfx('SAB'.includes(rh.grade) ? 'launch' : 'notify'); rhList(); rhInfo();
   return true;
 }
 function rhOffsetStep(dts) {  // décalage automatique : si tu tapes en moyenne en retard (ou en avance), on corrige de 70 % de l'écart
@@ -1058,13 +1058,13 @@ $('rhFs').onclick = () => { rhFull(!document.fullscreenElement); $('rhFs').blur(
 $('rhOffset').addEventListener('change', () => { rhOffMs = +$('rhOffset').value; });
 $('rhClick').onchange = () => { rhAudio(); rhCtx.resume(); rhClick(); };  // le son choisi, pour l'entendre
 $('rhVol').oninput = () => { if (rhOut) rhOut.gain.value = +$('rhVol').value / 100 * .6; };
-for (const id of ['rhVol', 'rhClick', 'rhOffset']) $(id).addEventListener('change', () => { gstore('rhythmPrefs', {})[id] = $(id).value; saveGames(); });
+for (const id of ['rhVol', 'rhClick', 'rhOffset', 'psArc', 'psHid']) $(id).addEventListener('change', () => { gstore('rhythmPrefs', {})[id] = $(id).value; saveGames(); });
 setInterval(() => { if (rhCtx?.state === 'running' && (!view.classList.contains('on') || rh?.mode !== 'play')) rhCtx.suspend(); }, 200);  // la musique s'arrête avec la partie
 document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement) rhPause(); });  // Échap sort du plein écran : on met en pause
 $('gNew').onclick = () => { if (rh) rhSelect(rh.song, rh.diff); $('gNew').blur(); };
 function rhInfo() { const res = games.rhythm || {}, all = Object.values(res); showStats([['Morceaux joués', all.length], ['Notes S', all.filter(r => r.grade === 'S').length], ['Meilleur combo', all.reduce((m, r) => Math.max(m, r.combo || 0), 0)]]); }
 function rhOpen() {
-  const p = games.rhythmPrefs || {}; for (const id of ['rhVol', 'rhClick', 'rhOffset']) if (p[id] != null) $(id).value = p[id];
+  const p = games.rhythmPrefs || {}; for (const id of ['rhVol', 'rhClick', 'rhOffset', 'psArc', 'psHid']) if (p[id] != null) $(id).value = p[id];
   rhOffMs = +$('rhOffset').value; rhInfo();
   if (rh) { rhList(); return gameLoop(rh, RHG.key, RHG.update, rhDrawAll); }
   const last = games.rhythmLast || {song: 0, diff: 'normal'}; rhSelect(last.song, last.diff).catch(() => rhSelect(0, 'normal'));
@@ -1073,27 +1073,36 @@ function rhOpen() {
 /* ---------- Pulsar : huit voies vers une étoile. Le bouclier (souris ou ← →) attrape les notes bleues ; les anneaux roses rétrécissent : on frappe (espace ou clic) quand ils se posent sur le cercle du bouclier. ---------- */
 const PS = {CX: 160, CY: 124, R: 30, FAR: 128, ARC: .42};
 const RHG = {key: 'pulsar', factor: 1.05, color: '#3fe0ff',
-  help: [['Souris ou ← → : le bouclier attrape les notes bleues', '#c8f8ff'], ['ESPACE ou clic quand l\'anneau rose se pose sur le cercle', '#ffb0d8']],
+  help: [['Souris ou ← → : le bouclier attrape les notes bleues', '#c8f8ff'], ['ESPACE ou clic quand l\'anneau rose se pose sur le cercle', '#ffb0d8'], ['Éloigne le bouclier des notes rouges ; suis les spirales', '#ff8a8a']],
   // les notes de base (4 voies) deviennent : des notes à attraper sur 8 directions, et des anneaux à frapper (notes longues et accords)
-  chart(base, c) {
-    const out = []; let dir = 6, lastT = -9, lastPulse = -9;
+  chart(base, c, diff) {
+    const lv = {facile: 0, normal: 1, difficile: 2, expert: 3}[rhTier(diff)] ?? 1, every = [0, 12, 8, 6][lv];
+    const out = []; let dir = 6, lastT = -9, lastPulse = -9, nc = 0, nl = 0, swEnd = -9;
     base.forEach((n, i) => {
+      if (n.t < swEnd + .15) return;  // rien pendant une spirale
       const chord = base[i - 1] && Math.abs(base[i - 1].t - n.t) < .01;
+      if (lv && n.len >= .6 && !chord && n.t - lastT >= .3 && nl++ % 2 === 0) {  // une note longue sur deux : une spirale à suivre (un quart ou un demi-tour)
+        const turn = (i % 2 ? 1 : -1) * (n.len > 1.2 ? 4 : 2); out.push({t: n.t, kind: 'swirl', lane: dir, end: n.t + n.len, turn}); dir = (dir + turn + 8) % 8; lastT = swEnd = n.t + n.len; return;
+      }
       if ((n.len > 0 || chord || n.t - lastPulse > 4) && n.t - lastPulse > .22) { out.push({t: n.t, kind: 'pulse', lane: 8}); lastPulse = n.t; if (chord) return; }
       if (chord) return;
+      if (every && ++nc % every === 0 && n.t - lastT >= .35 && (base[i + 1]?.t ?? 1e9) - n.t >= .35) { out.push({t: n.t, kind: 'avoid', lane: dir}); lastT = n.t; return; }  // une note rouge là où est le bouclier : il faut s'écarter
       let want = (n.lane * 2 + (i % 2)) % 8, step = ((want - dir + 12) % 8) - 4;  // -4..3 : le chemin le plus court
       const gap = n.t - lastT; if (gap < .3 && Math.abs(step) > 2) step = Math.sign(step) * 2;  // pas de demi-tour impossible sur des notes serrées
       dir = (dir + step + 8) % 8; out.push({t: n.t, kind: 'catch', lane: dir}); lastT = n.t;
     });
     return out;
   },
-  reset() { Object.assign(rh, {ang: -Math.PI / 2, lane: 6, mx: null, flash: 0, judge: null, ring: 0}); },
+  reset() { Object.assign(rh, {ang: -Math.PI / 2, lane: 6, mx: null, flash: 0, judge: null, ring: 0, arc: +psVal('psArc', .42), nova: null}); },
+  over() { rh.nova = !rh.counts['RATÉ'] && rh.maxCombo > 0 ? rh.tick : null; },
   update() {
     const now = rhNow();
     if (rh.mx === null) { const want = laneAng(rh.lane); rh.ang += ((((want - rh.ang) % TAU) + 3 * Math.PI) % TAU - Math.PI) * .45; }
     for (const n of rh.notes) {
       if (n.judged) continue; if (n.t - now > .2) break;
-      if (n.kind === 'catch' && now >= n.t - .02 && angDiff(rh.ang, laneAng(n.lane)) <= PS.ARC) { const w = rhHit(n, Math.max(0, now - n.t)); psFx(n, w); }
+      if (n.kind === 'avoid') { if (now >= n.t) { if (angDiff(rh.ang, laneAng(n.lane)) <= rh.arc) { rhMissed(n); psFx(n, null); rh.flash = -10; } else { psFx(n, rhHit(n, 0)); rh.judge.text = 'ÉVITÉ'; } } continue; }
+      if (n.kind === 'swirl') { if (now >= n.t - .02) psSwirl(n, now); continue; }
+      if (n.kind === 'catch' && now >= n.t - .02 && angDiff(rh.ang, laneAng(n.lane)) <= rh.arc) { const w = rhHit(n, Math.max(0, now - n.t)); psFx(n, w); }
       else if (now - n.t > RH.WIN.at(-1)[0] / (n.kind === 'pulse' ? PS_PK : 1)) { rhMissed(n); psFx(n, null); }
     }
     for (const s of rh.sparks) { s.x += s.vx; s.y += s.vy; s.life--; } rh.sparks = rh.sparks.filter(s => s.life > 0);
@@ -1104,6 +1113,15 @@ const RHG = {key: 'pulsar', factor: 1.05, color: '#3fe0ff',
   },
   draw() { psDraw(); },
 };
+const psVal = (id, d) => { const v = $(id)?.value; return v == null || v === '' ? d : v; };
+const psSwA = (n, p) => laneAng(n.lane) + n.turn * Math.PI / 4 * Math.max(0, Math.min(1, p));
+function psSwirl(n, now) {  // une spirale : le bouclier doit rester sur le point qui tourne ; 70 % du temps au moins pour la réussir
+  const p = (now - n.t) / (n.end - n.t); n.on = (n.on || 0) + (angDiff(rh.ang, psSwA(n, p)) <= rh.arc ? 1 : 0); n.all = (n.all || 0) + 1;
+  if (p >= 1) { const r = n.on / n.all; if (r >= .7) psFx(n, rhHit(n, r >= .9 ? 0 : RH.WIN[1][0])); else { rhMissed(n); psFx(n, null); } }
+}
+const PS_SPIKE = cnv(15, 15, b => { for (let y = -7; y <= 7; y++) for (let x = -7; x <= 7; x++) { const m = Math.abs(x) + Math.abs(y), q = Math.max(Math.abs(x), Math.abs(y)), on = m <= 4 || (q <= 7 && (x === 0 || y === 0)) || (Math.abs(x) === Math.abs(y) && q <= 5);  // une étoile rouge à pointes
+  if (on) px(b, m <= 1 ? '#ffffff' : m <= 3 ? '#ff4a5a' : '#a81a2a', x + 7, y + 7); } });
+const PS_DEAD = .35;  // la zone morte du stick de la manette
 const PS_PK = .5;  // les anneaux pardonnent deux fois plus : PARFAIT à ±90 ms, BIEN à ±180 ms, OK à ±280 ms
 const TAU = 2 * Math.PI, laneAng = l => l * Math.PI / 4;
 const angDiff = (a, b) => Math.abs(((a - b) % TAU + 3 * Math.PI) % TAU - Math.PI);
@@ -1147,7 +1165,7 @@ function psCircle(d, colA, colB, thick) {  // un cercle de pixels pleins, en tir
 }
 function psDraw() {
   const live = rh.mode === 'play' || rh.mode === 'pause', now = live ? rhNow() : -2, beat = 60 / rh.info.bpm, ph = ((now - (rh.c.beat0 || 0)) % beat + beat) % beat, pulse = now > 0 ? Math.max(0, 1 - ph / beat * 3) : 0;
-  const app = rh.stars > 6 ? .95 : rh.stars > 3 ? 1.15 : 1.4, sp = (PS.FAR - PS.R) / app;  // le temps d'approche des notes suit la difficulté
+  const app = rh.stars > 6 ? .95 : rh.stars > 3 ? 1.15 : 1.4, sp = (PS.FAR - PS.R) / app; rh.hid = psVal('psHid', '0') === '1';  // le temps d'approche des notes suit la difficulté
   g.drawImage(PS_BG, 0, 0);
   if (pulse > 0) psCircle(PS.R + 6 + (1 - pulse) * 90, '#1a1640', '#120e30', 1);  // une onde part de l'étoile à chaque temps
   if (rh.flash > 0) { g.globalAlpha = rh.flash / 30; px(g, '#ff4fa8', 0, 0, W, H); g.globalAlpha = 1; }
@@ -1155,19 +1173,22 @@ function psDraw() {
   // repère au bout des voies où une note arrive bientôt
   const soon = new Set(); for (const n of rh.notes) { if (n.judged || n.kind !== 'catch') continue; if (n.t - now > app + .5) break; if (n.t - now > app - .1) soon.add(n.lane); }
   for (const l of soon) nsLane(g, laneAng(l), '#ffffff');
+  psSwirls(now, sp, app);
   // la cible : le cercle du bouclier s'allume en rose quand un anneau arrive, « ESPACE ! » au bon moment
   const nextP = rh.notes.find(n => !n.judged && n.kind === 'pulse');
   if (nextP && nextP.t - now < app) { const inWin = Math.abs(nextP.t - now) <= RH.WIN[1][0] / PS_PK; psCircle(PS.R, inWin ? '#ffffff' : '#ff4fa8', inWin ? '#ffb0d8' : '#5a1a40', 2); if (inWin) pxFont(g, 'ESPACE !', PS.CX, PS.CY - PS.R - 10, '#ffffff', 7, 'center'); }
   // les notes, du plus loin au plus près
   for (const pass of ['pulse', 'catch']) for (let i = rh.notes.length - 1; i >= 0; i--) {  // les anneaux d'abord : les notes bleues restent par-dessus
-    const n = rh.notes[i]; if (n.kind !== pass || n.judged && !n.missed) continue; const d = PS.R + (n.t - now) * sp; if (d > PS.FAR + 8 || d < (n.missed ? PS.R - 14 : PS.R - 6)) continue;
+    const n = rh.notes[i]; if ((n.kind === 'pulse' ? 'pulse' : 'catch') !== pass || n.kind === 'swirl' || n.judged && !n.missed) continue; const d = PS.R + (n.t - now) * sp; if (d > PS.FAR + 8 || d < (n.missed ? PS.R - 14 : PS.R - 6)) continue;
+    if (n.kind === 'avoid') { const a = laneAng(n.lane); g.drawImage(n.missed ? PS_MISS : PS_SPIKE, Math.round(PS.CX + Math.cos(a) * d - 7), Math.round(PS.CY + Math.sin(a) * d - 7)); continue; }
+    if (n.kind === 'catch' && !n.missed && rh.hid && d < PS.R + 40) { if (d < PS.R + 22) continue; g.globalAlpha = (d - PS.R - 22) / 18; }  // notes cachées : elles s'effacent avant d'arriver
     if (n.kind === 'catch') { const a = laneAng(n.lane), c = Math.cos(a), s = Math.sin(a);
       if (!n.missed) for (let k = 1; k <= 3; k++) { g.globalAlpha = .5 - k * .13; px(g, '#3fe0ff', PS.CX + c * (d + k * 6) - 2, PS.CY + s * (d + k * 6) - 2, 5, 5); } g.globalAlpha = 1;  // une traînée derrière la note
-      g.drawImage(n.missed ? PS_MISS : PS_NOTE, Math.round(PS.CX + c * d - 7), Math.round(PS.CY + s * d - 7)); }
+      g.drawImage(n.missed ? PS_MISS : PS_NOTE, Math.round(PS.CX + c * d - 7), Math.round(PS.CY + s * d - 7)); g.globalAlpha = 1; }
     else if (!n.missed) { const close = Math.abs(n.t - now) < RH.WIN[1][0] / PS_PK, c1 = close ? '#ffffff' : '#ff4fa8', c2 = close ? '#ffffff' : '#ffb0d8'; psCircle(d + 1, '#05030f', '#05030f', 1); psCircle(d, c1, c1, 3); psCircle(d - 1, c2, c2, 1); }
   }
   // l'étoile bat la mesure ; elle s'entoure d'un anneau quand on frappe
-  psHue = now > 0 ? ((Math.floor((now - (rh.c.beat0 || 0)) / beat / 8) % PS_HUES.length) + PS_HUES.length) % PS_HUES.length : 0;
+  psHue = now > 0 ? (((Math.floor((now - (rh.c.beat0 || 0)) / beat / 8) + Math.floor(rh.combo / 25)) % PS_HUES.length) + PS_HUES.length) % PS_HUES.length : 0;  // toutes les 2 mesures, et à chaque palier de 25 combo
   psLvl = live && rh.mode === 'play' ? psLvl * .8 + Math.min(1, psLevel() * 10) * .2 : psLvl * .9;
   { const hue = PS_HUES[psHue], halo = Math.round(8 + psLvl * 10 + pulse * 4);  // le halo : deux cercles qui grandissent avec le son et battent la mesure
     g.globalAlpha = .25 + psLvl * .4; psCircle(halo, hue[1], hue[2], 2); g.globalAlpha = .12 + psLvl * .25; psCircle(halo + 4, hue[0], hue[1], 1); g.globalAlpha = 1; }
@@ -1175,8 +1196,8 @@ function psDraw() {
   if (rh.ring > 0) { psCircle(10 + (6 - rh.ring), '#ffb0d8', '#ff4fa8', 1); if (rh.mode === 'play') rh.ring--; }
   // le bouclier : un arc de pixels, contour sombre, corps cyan, liseré clair
   for (let y = -PS.R - 8; y <= PS.R + 8; y++) for (let x = -PS.R - 8; x <= PS.R + 8; x++) {
-    const d = Math.hypot(x, y); if (d < PS.R + 1 || d > PS.R + 6) continue; const da = angDiff(Math.atan2(y, x), rh.ang); if (da > PS.ARC + .08) continue;
-    px(g, d > PS.R + 5 || d < PS.R + 2 || da > PS.ARC ? '#05030f' : d < PS.R + 3 ? '#c8f8ff' : '#3fe0ff', PS.CX + x, PS.CY + y);
+    const d = Math.hypot(x, y); if (d < PS.R + 1 || d > PS.R + 6) continue; const da = angDiff(Math.atan2(y, x), rh.ang); if (da > rh.arc + .08) continue;
+    px(g, d > PS.R + 5 || d < PS.R + 2 || da > rh.arc ? '#05030f' : d < PS.R + 3 ? '#c8f8ff' : '#3fe0ff', PS.CX + x, PS.CY + y);
   }
   for (const f of rh.fx) { const k = f.t / 16, s = Math.round(3 + k * 9); g.globalAlpha = 1 - k; px(g, f.col, f.x - s, f.y - s, s * 2, 1); px(g, f.col, f.x - s, f.y + s, s * 2 + 1, 1); px(g, f.col, f.x - s, f.y - s, 1, s * 2); px(g, f.col, f.x + s, f.y - s, 1, s * 2); g.globalAlpha = 1; }
   for (const s of rh.sparks) { g.globalAlpha = s.life / 16; px(g, s.col, s.x, s.y, 2, 2); g.globalAlpha = 1; }
@@ -1187,7 +1208,21 @@ function psDraw() {
     if (rh.judge && rh.mode === 'play') pxFont(g, rh.judge.text, PS.CX, PS.CY + 22 - (24 - rh.judge.t) / 4, rh.judge.col, 6, 'center');
     pxFont(g, rhStarTxt(rh.stars), 4, H - 6, '#6a64a0', 6);
   }
+  if (rh.mode === 'over' && rh.nova != null) {  // plein combo : la supernova
+    const k = rh.tick - rh.nova; if (k < 24) { g.globalAlpha = (24 - k) / 30; px(g, '#fff4c0', 0, 0, W, H); g.globalAlpha = 1; }
+    for (let j = 0; j < 3; j++) { const r = (k * 2.5 + j * 40) % 170; if (r > 6) { g.globalAlpha = Math.max(0, 1 - r / 170); psCircle(r, j % 2 ? '#ffd84a' : '#ffffff', '#ff9a3d', 2); g.globalAlpha = 1; } }
+    pxFont(g, 'SUPERNOVA !', PS.CX, 40, '#fff4a0', 10, 'center');
+  }
   rhScreens(84);
+}
+function psSwirls(now, sp, app) {  // les spirales : la tête arrive sur sa voie, puis un point tourne autour du cercle ; son chemin restant en pointillés
+  for (const n of rh.notes) {
+    if (n.kind !== 'swirl' || n.judged || n.t - now > app + .2) continue;
+    const d = Math.max(PS.R, PS.R + (n.t - now) * sp), p = (now - n.t) / (n.end - n.t), a = psSwA(n, p), a1 = psSwA(n, 1), on = p >= 0 && angDiff(rh.ang, a) <= rh.arc;
+    for (let k = 0; k <= 30; k++) { const b = a + (a1 - a) * k / 30; px(g, k % 3 ? '#1a9ac0' : '#c8f8ff', PS.CX + Math.cos(b) * (PS.R - 5), PS.CY + Math.sin(b) * (PS.R - 5), 2, 2); }
+    g.drawImage(PS_NOTE, Math.round(PS.CX + Math.cos(a) * d - 7), Math.round(PS.CY + Math.sin(a) * d - 7));
+    if (p >= 0) psCircle(4, on ? '#ffffff' : '#ff4a5a', on ? '#c8f8ff' : '#a81a2a', 1);
+  }
 }
 cv.onpointermove = e => { if (rh?.ang == null) return; const [x, y] = cpos(e); if (Math.hypot(x - PS.CX, y - PS.CY) > 4) { rh.mx = x; rh.ang = Math.atan2(y - PS.CY, x - PS.CX); } };
 cv.onpointerdown = e => { e.preventDefault(); if (!rh) return; if (rh.mode === 'play') psStrike(); else rhPress(); };
@@ -1201,8 +1236,21 @@ document.addEventListener('keyup', e => { if (e.key === ' ' && keyOk(e)) e.preve
 {  // vérification : un morceau donne des notes à attraper ET des anneaux à frapper dans chaque difficulté, jamais hors des 8 voies
   const c = rhCompose(RH_SONGS[3]), ch = Object.keys(RH_DIFFS).map(d => RHG.chart(rhChart(c, d), c, d));
   console.assert(ch.every(x => x.some(n => n.kind === 'pulse') && x.some(n => n.kind === 'catch') && x.every(n => n.kind === 'pulse' || (n.lane >= 0 && n.lane < 8)))
-    && rhStars(ch[0], c.len, 1) < rhStars(ch[3], c.len, 1) && angDiff(.1, TAU - .1) < .21, 'pulsar', ch.map(x => x.length));
+    && rhStars(ch[0], c.len, 1) < rhStars(ch[3], c.len, 1) && angDiff(.1, TAU - .1) < .21 && ch[3].some(n => n.kind === 'avoid') && !ch[0].some(n => n.kind === 'avoid' || n.kind === 'swirl')
+    && ch.every(x => x.every((n, i) => !i || n.t >= x[i - 1].t)), 'pulsar', ch.map(x => x.length));
 }
+{
+  const held = new Set(), send = k => document.dispatchEvent(new KeyboardEvent('keydown', {key: k, bubbles: true}));
+  const loop = () => {
+    requestAnimationFrame(loop); if (!view.classList.contains('on') || !navigator.getGamepads || !rh) return;
+    const p = [...navigator.getGamepads()].find(Boolean); if (!p) return;
+    const x = p.axes[0] || 0, y = p.axes[1] || 0, m = Math.hypot(x, y);
+    if (m > PS_DEAD && rh.ang != null) { rh.mx = 0; rh.ang = Math.atan2(y, x); }
+    for (const [i, k] of [[0, ' '], [1, ' '], [9, ' '], [8, 'p'], [14, 'ArrowLeft'], [15, 'ArrowRight']]) { const on = !!p.buttons[i]?.pressed; if (on && !held.has(i)) { held.add(i); send(k); } else if (!on) held.delete(i); }
+  };
+  requestAnimationFrame(loop);
+}
+$('psArc').addEventListener('change', () => { if (rh) rh.arc = +psVal('psArc', .42); });
 cv.__rh = {st: () => rh, star: () => ({hue: psHue, lvl: psLvl}), finish: hist => { rh.hist = hist; rh.mode = 'play'; rhCheckEnd(1e9); }};
 ctx.onOpen(() => rhOpen());
 

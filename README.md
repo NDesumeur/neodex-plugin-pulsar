@@ -28,6 +28,14 @@ L'onglet **Chansons** reprend les 1200 morceaux de Rythme. La difficulté de cha
 
 Dans **Mes musiques**, crée un niveau à partir d'un **fichier audio** importé ou d'une musique de ta bibliothèque **NeoMusic** : le jeu trouve son tempo et ses temps forts et en fait un niveau, à la **difficulté** choisie (1 à 10 étoiles).
 
+## Notes rouges, spirales et supernova
+
+- **Notes rouges** (à partir de Normal) : elles arrivent là où se trouve ton bouclier. Écarte-le avant qu'elles touchent le cercle : « ÉVITÉ ». Si elles tapent le bouclier, c'est un raté.
+- **Spirales** (sur certaines notes longues) : une note arrive, puis un point tourne autour du cercle d'un quart ou d'un demi-tour ; garde le bouclier dessus au moins 70 % du temps.
+- La couleur de l'étoile change aussi à chaque palier de 25 combo. Un **plein combo** finit en **supernova**.
+- **Bouclier** (réglage) : Large, Normal ou Petit. **Notes cachées** : les notes bleues s'effacent avant d'arriver.
+- **Manette** : le stick gauche oriente le bouclier exactement (avec une zone morte au centre), A ou B frappe, la croix change de voie, Start lance, Select met en pause.
+
 ## Réglages
 
 - **Volume** de la musique.

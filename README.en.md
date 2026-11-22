@@ -28,6 +28,14 @@ The **Songs** tab offers the 1200 Rythme tracks. Each level's difficulty is work
 
 In **My music**, create a level from an imported **audio file** or a track from your **NeoMusic** library: the game finds its tempo and strong beats and turns them into a level, at the chosen **difficulty** (1 to 10 stars).
 
+## Red notes, spirals and supernova
+
+- **Red notes** (from Normal up): they arrive where your shield is. Move it away before they reach the circle: "DODGED". If they hit the shield, it's a miss.
+- **Spirals** (on some long notes): a note arrives, then a dot turns around the circle by a quarter or half turn; keep the shield on it at least 70 % of the time.
+- The star's colour also changes at each 25-combo step. A **full combo** ends in a **supernova**.
+- **Shield** (setting): Wide, Normal or Small. **Hidden notes**: blue notes fade out before arriving.
+- **Gamepad**: the left stick aims the shield exactly (with a dead zone in the centre), A or B strikes, the D-pad changes lane, Start starts, Select pauses.
+
 ## Settings
 
 - Music **volume**.
