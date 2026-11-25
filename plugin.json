@@ -1,7 +1,7 @@
 {
   "id": "neodex.pulsar",
   "name": "Pulsar",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "author": "NDesumeur",
   "description": "Jeu de rythme en cercle : les notes foncent vers une étoile depuis huit directions. Tourne le bouclier à la souris ou aux flèches pour attraper les notes bleues, frappe avec Espace ou un clic les anneaux roses quand ils se posent sur le cercle. Les 1200 morceaux de Rythme notés de 1 à 10 étoiles, ou des niveaux créés depuis ta musique ; combo, note de S à D. L'étoile centrale bat avec la musique et change de couleur, écran de fin avec la courbe de précision le long du morceau. Notes rouges à éviter, spirales à suivre, taille du bouclier réglable, notes cachées, supernova au plein combo, stick de la manette.",
   "icon": "icon.png",
@@ -10,7 +10,10 @@
   "neobase": ">=4.1.0",
   "type": "app",
   "category": "Jeux",
-  "compatibility": ["windows", "linux"],
+  "compatibility": [
+    "windows",
+    "linux"
+  ],
   "syncMode": "progression",
   "syncInfo": "Scores et notes par niveau, réglages.",
   "mobile": false,
@@ -24,5 +27,84 @@
     "storage",
     "documents",
     "music"
+  ],
+  "succes": [
+    {
+      "id": "premier",
+      "nom": "Premières notes",
+      "texte": "Finir un premier morceau"
+    },
+    {
+      "id": "dix",
+      "nom": "Répertoire",
+      "texte": "Finir 10 morceaux différents"
+    },
+    {
+      "id": "trente",
+      "nom": "Grand répertoire",
+      "texte": "Finir 30 morceaux différents"
+    },
+    {
+      "id": "note-a",
+      "nom": "En rythme",
+      "texte": "Obtenir la note A sur un morceau"
+    },
+    {
+      "id": "note-s",
+      "nom": "Virtuose",
+      "texte": "Obtenir la note S sur un morceau"
+    },
+    {
+      "id": "s10",
+      "nom": "Maestro",
+      "texte": "Obtenir la note S sur 10 morceaux"
+    },
+    {
+      "id": "combo100",
+      "nom": "Cent de suite",
+      "texte": "Faire un combo de 100 notes"
+    },
+    {
+      "id": "combo300",
+      "nom": "Transe",
+      "texte": "Faire un combo de 300 notes"
+    },
+    {
+      "id": "parfait",
+      "nom": "Sans une fausse note",
+      "texte": "Finir un morceau avec 100 % de précision",
+      "cache": true
+    },
+    {
+      "id": "import",
+      "nom": "Ma musique",
+      "texte": "Importer un de tes morceaux"
+    }
+  ],
+  "records": [
+    {
+      "id": "morceaux",
+      "nom": "Morceaux joués",
+      "sens": "haut",
+      "format": "nombre"
+    },
+    {
+      "id": "notes-s",
+      "nom": "Notes S",
+      "sens": "haut",
+      "format": "nombre"
+    },
+    {
+      "id": "combo",
+      "nom": "Meilleur combo",
+      "sens": "haut",
+      "format": "nombre"
+    },
+    {
+      "id": "precision",
+      "nom": "Meilleure précision",
+      "sens": "haut",
+      "format": "pourcent"
+    }
   ]
 }
